@@ -37,7 +37,7 @@ class Blog {
     authors.name FROM posts INNER JOIN authors 
     ON posts.author_id = authors.id WHERE posts.id = ?`;
     const blogData = await db.query(query, [this.id]);
-    return blogData;
+    return blogData[0][0];
   }
 
   async getBlogUpdate() {
@@ -45,7 +45,7 @@ class Blog {
     authors.name FROM posts INNER JOIN authors 
     ON posts.author_id = authors.id WHERE posts.id = ?`;
     const getBlogUpdate = await db.query(query, [this.id]);
-    return getBlogUpdate;
+    return getBlogUpdate[0][0];
   }
 
   async postBlogUpdate() {

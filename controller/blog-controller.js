@@ -1,4 +1,5 @@
 const Blog = require("../model/blog-model");
+const dateFormat = require("../utils/data-format");
 
 function getHome(req, res) {
   res.redirect("posts");
@@ -28,33 +29,18 @@ async function postBlog(req, res) {
 
 async function getBlog(req, res) {
   const blogs = new Blog(null, null, null, null, req.params.id);
-  const [myBlog] = await blogs.getBlog();
-  if (myBlog.length === 0 || !myBlog) {
-    return res.render("404");
+  const myBlog = await blogs.getBlog();
+  let newBlog = myBlog;
+  if (newBlog) {
+    newBlog = dateFormat(myBlog);
   }
-  const newBlogs = {
-    ...myBlog[0],
-    date: myBlog[0].date.toISOString,
-    newDate: myBlog[0].date.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }),
-  };
-
-  res.render("post-detail", { blog: newBlogs });
+  res.render("post-detail", { blog: newBlog });
 }
 
 async function getBlogUpdate(req, res) {
   const blogs = new Blog(null, null, null, null, req.params.id);
   const getBlogUpdate = await blogs.getBlogUpdate();
-
-  if (getBlogUpdate[0].length === 0 || !getBlogUpdate) {
-    return res.render("404");
-  }
-
-  res.render("update-post", { blog: getBlogUpdate[0][0] });
+  res.render("update-post", { blog: getBlogUpdate });
 }
 
 async function postBlogUpdate(req, res) {

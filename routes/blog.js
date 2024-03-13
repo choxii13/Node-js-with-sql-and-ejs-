@@ -18,4 +18,8 @@ router.post("/posts/:id/update-post", blogController.postBlogUpdate);
 
 router.post("/posts/:id/delete", blogController.deleteBlog);
 
+router.get("*", function (req, res) {
+  res.render("404");
+});
+
 module.exports = router;
