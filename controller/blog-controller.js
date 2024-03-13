@@ -1,5 +1,5 @@
 const Blog = require("../model/blog-model");
-const dateFormat = require("../utils/data-format");
+const dateFormat = require("../utils/date-format");
 
 function getHome(req, res) {
   res.redirect("posts");
