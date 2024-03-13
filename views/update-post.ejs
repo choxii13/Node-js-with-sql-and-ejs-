@@ -10,7 +10,7 @@
   <%- include('includes/header') %>
     <main>
       <h1>Update post</h1>
-      <form action="/posts/<%=blog.id%>/edit" method="POST">
+      <form action="/posts/<%=blog.id%>/update-post" method="POST">
         <div class="form-control">
           <label for="title">Title</label>
           <input type="text" value="<%=blog.title%>" id="title" name="title" required>

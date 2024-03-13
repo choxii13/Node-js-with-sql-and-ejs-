@@ -29,7 +29,9 @@ async function postBlog(req, res) {
 async function getBlog(req, res) {
   const blogs = new Blog(null, null, null, null, req.params.id);
   const [myBlog] = await blogs.getBlog();
-
+  if (myBlog.length === 0 || !myBlog) {
+    return res.render("404");
+  }
   const newBlogs = {
     ...myBlog[0],
     date: myBlog[0].date.toISOString,
@@ -40,9 +42,7 @@ async function getBlog(req, res) {
       day: "numeric",
     }),
   };
-  if (myBlog.length === 0 || !myBlog) {
-    return res.render("404");
-  }
+
   res.render("post-detail", { blog: newBlogs });
 }
 
@@ -50,15 +50,16 @@ async function getBlogUpdate(req, res) {
   const blogs = new Blog(null, null, null, null, req.params.id);
   const getBlogUpdate = await blogs.getBlogUpdate();
 
-  if (getBlogUpdate.length === 0 || !getBlogUpdate) {
+  if (getBlogUpdate[0].length === 0 || !getBlogUpdate) {
     return res.render("404");
   }
 
-  res.render("update-post", { blog: getBlogUpdate[0] });
+  res.render("update-post", { blog: getBlogUpdate[0][0] });
 }
 
 async function postBlogUpdate(req, res) {
-  const blogs = new Blog(null, null, null, null, req.params.id);
+  const { title, summary, content } = req.body;
+  const blogs = new Blog(title, null, summary, content, req.params.id);
   await blogs.postBlogUpdate();
   res.redirect("/posts");
 }
